@@ -89,6 +89,8 @@ const Home = () => {
                                 value={message}
                                 placeholder="Your message..."
                                 maxLength={100}
+                                minLength={1}                                
+                                required
                                 onChange={(event) =>
                                     setMessage(event.target.value)
                                 }
