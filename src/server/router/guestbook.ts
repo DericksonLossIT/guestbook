@@ -3,6 +3,23 @@ import { z } from "zod";
 import { createRouter } from "./context";
 
 export const guestbookRouter = createRouter()
+    .query("getAll", {
+        async resolve({ ctx }) {
+            try {
+                return await ctx.prisma.guestbook.findMany({
+                    select: {
+                        name: true,
+                        message: true,
+                    },
+                    orderBy: {
+                        createdAt: "desc",
+                    },
+                });
+            } catch (error) {
+                console.log("error", error);
+            }
+        },
+    })
     .middleware(async ({ ctx, next }) => {
         if (!ctx.session) {
             throw new TRPCError({ code: "UNAUTHORIZED" });
