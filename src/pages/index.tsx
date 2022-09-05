@@ -53,6 +53,9 @@ const Home = () => {
             <p>
                 Tutorial for <code>create-t3-app</code>
             </p>
+            <p className="pt-3 pb-2">
+                Made with ❤ by <a className="text-transparent bg-clip-text transform bg-gradient-to-r from-purple-400 to bg-pink-600" target="__blank" href="https://dericksonloss.tech">dericksonloss.tech</a>
+            </p>
 
             {session ? (
                 <div className="">
@@ -86,6 +89,8 @@ const Home = () => {
                                 value={message}
                                 placeholder="Your message..."
                                 maxLength={100}
+                                minLength={1}                                
+                                required
                                 onChange={(event) =>
                                     setMessage(event.target.value)
                                 }
