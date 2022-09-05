@@ -12,9 +12,9 @@ const Messages = () => {
         <div className="flex flex-col gap-4">
             {messages?.map((msg, index) => {
                 return (
-                    <div key={index}>
+                    <div className="flex flex-col px-8" key={index}>
                         <p>{msg.message}</p>
-                        <span>- {msg.name}</span>
+                        <span className="">- {msg.name}</span>
                     </div>
                 );
             })}
@@ -25,20 +25,20 @@ const Messages = () => {
 const Home = () => {
     const { data: session, status } = useSession();
     const [message, setMessage] = useState("");
-    
-    const ctx = trpc.useContext()
+
+    const ctx = trpc.useContext();
     const postMessage = trpc.useMutation("guestbookpostMessage", {
         onMutate: () => {
-            ctx.cancelQuery(["guestbookgetAll"])
+            ctx.cancelQuery(["guestbookgetAll"]);
 
-            const optimisticUpdate = ctx.getQueryData(["guestbookgetAll"])
+            const optimisticUpdate = ctx.getQueryData(["guestbookgetAll"]);
             if (optimisticUpdate) {
-                ctx.setQueryData(["guestbookgetAll"], optimisticUpdate)
+                ctx.setQueryData(["guestbookgetAll"], optimisticUpdate);
             }
         },
         onSettled: () => {
-            ctx.invalidateQueries(["guestbookgetAll"])
-        }
+            ctx.invalidateQueries(["guestbookgetAll"]);
+        },
     });
 
     if (status === "loading") {
@@ -49,18 +49,25 @@ const Home = () => {
 
     return (
         <main className="flex flex-col items-center">
-            <h1 className="text-3xl pt-4">Guestbook</h1>
+            <h1 className="font-extrabold text-transparent text-3xl pt-4 bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Guestbook</h1>
             <p>
                 Tutorial for <code>create-t3-app</code>
             </p>
 
             {session ? (
-                <div>
-                    <p>hi {session.user?.name}</p>
+                <div className="">
+                    <div className="flex flex-row flex-wrap justify-evenly">
+                        <p className="mt-4">Hi {session.user?.name}!</p>
 
-                    <button onClick={() => signOut()}>Logout</button>
+                        <button
+                            className="p-2 mt-2 rounded-md border-2 border-zinc-800 bg-red-600 focus:outline-none focus:bg-red-400 hover:bg-red-500 focus:ring-4 shadow-lg transform active:scale-75 transition-transform" 
+                            onClick={() => signOut()}
+                        >
+                            Logout
+                        </button>
+                    </div>
 
-                    <div className="pt-6">
+                    <div className="pt-6 flex flex-row flex-wrap justify-evenly">
                         <form
                             className="flex gap-2"
                             onSubmit={(event) => {
@@ -86,7 +93,7 @@ const Home = () => {
                             />
                             <button
                                 type="submit"
-                                className="p-2 rounded-md border-2 border-zinc-800 focus:outline-none"
+                                className="p-2 rounded-md border-2 text-black bg-gray-100 hover:bg-white focus:bg-slate-100 border-zinc-800 focus:outline-none focus:ring-4 shadow-lg transform active:scale-75 transition-transform"
                             >
                                 Submit
                             </button>
@@ -98,7 +105,7 @@ const Home = () => {
                 </div>
             ) : (
                 <>
-                    <button onClick={() => signIn("discord")}>
+                    <button className="p-2 mt-2 rounded-md border-2 border-zinc-800 bg-green-600 focus:outline-none focus:bg-green-400 hover:bg-green-500 focus:ring-4 shadow-lg transform active:scale-75 transition-transform" onClick={() => signIn("discord")}>
                         Login with Discord
                     </button>
                     <div className="pt-10" />
